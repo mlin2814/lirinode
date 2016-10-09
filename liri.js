@@ -1,16 +1,24 @@
-var client = require('./keys.js');
-client.more = {'extra' : 'more'}
+var keys = require('./keys.js');
+keys.more = {'extra' : 'more'}
 
-client.get('search/tweets', {q: 'keys.js'}, function(error, tweets, response) {
-   console.log(tweets);
-});
+var Twitter = require('twitter');
 
-console.log("Twitter")
-console.log(client.client);
+var client = new Twitter(keys.twitterKeys);
 
-var client = process.argv[2];
+var params = {
+	screen_name: 'RC2814',
+	count: 3,
 
-var client = keys.client;
+};
+
+var userInput = process.argv[2];
+
+if (userInput == "my-tweets"){
+	client.get('statuses/user_timeline', params, function(error, tweets, response){
+   		console.log(tweets);
+	});
+};
+
 
 // ====================================
 
@@ -25,14 +33,14 @@ spotify.search({ type: 'track', query: process.argv[2]}, function(err, data) {
 
 
 
-// // ==================================
+// // // ==================================
 
-var request = require('request');
-var movie = process.argv[3];
-request('http://www.omdbapi.com/?' + movie + "t=&y=&plot=short&r=json&tomatoes=", function (error, response, body) {
+// var request = require('request');
+// var movie = process.argv[3];
+// request('http://www.omdbapi.com/?' + movie + "t=&y=&plot=short&r=json&tomatoes=", function (error, response, body) {
 
-	if (!error && response.statusCode == 200) {
+// 	if (!error && response.statusCode == 200) {
 
-		console.log("The movie's information is: " + JSON.parse(body)["imdbInfo"])
-	}
-});
+// 		console.log("The movie's information is: " + JSON.parse(body)["imdbInfo"])
+// 	}
+// });
