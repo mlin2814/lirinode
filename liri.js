@@ -11,9 +11,9 @@ var params = {
 
 };
 
-var userInput = process.argv[2];
+var twitterInput = process.argv[2];
 
-if (userInput == "my-tweets"){
+if (twitterInput == "my-tweets"){
 	client.get('statuses/user_timeline', params, function(error, tweets, response){
    		console.log(tweets);
 	});
@@ -24,12 +24,17 @@ if (userInput == "my-tweets"){
 
 var spotify = require('spotify');
 
-spotify.search({ type: 'track', query: process.argv[2]}, function(err, data) {
-    if (err) {
-        console.log('Error occurred: ' + err);
-        return;
-    }
-});
+var spotifyCommand = process.argv[2];
+var spotifySong = process.argv[3];
+
+if (spotifyCommand == "spotify-this-song"){
+	spotify.search({ type: 'track', query: process.argv[3]}, function(err, data) {
+    	if (err) {
+        	console.log('Error occurred: ' + err);
+        	return;
+        }
+    })
+};
 
 
 
