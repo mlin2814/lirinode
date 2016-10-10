@@ -70,11 +70,14 @@ function spotify(){
 var spotify = require('spotify');
 var spotifySong = process.argv[3];
 
-spotify.search({ type: 'track', query: process.argv[3]}, function(err, data){
+spotify.search({ type: 'track', query: spotifySong}, function(err, data){
     if (err) {
         console.log('Error occurred: ' + err);
         return;
         }
+    else {
+        console.log(spotify.search);
+    }
     });
 }
 //========================
