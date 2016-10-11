@@ -85,22 +85,7 @@ spotify.search({ type: 'track', query: spotifySong}, function(err, data){
 function omdb(){
 var request = require('request');
 var movie = process.argv[3];
-// // Store all of the arguments in an array 
-// var nodeArgs = process.argv;
-// // Create an empty variable for holding the movie name
-// var movieName = "";
-// // Loop through all the words in the node argument
-// // And do a little for-loop magic to handle the inclusion of "+"s
-// for (var i=2; i<nodeArgs.length; i++){
-//     if (i>2 && i< nodeArgs.length){
-//         movieName = movieName + "+" + nodeArgs[i];
-//     }
 
-//     else {
-//         movieName = movieName + nodeArgs[i];
-//     }
-// }
-// Then run a request to the OMDB API with the movie specified 
 var queryUrl = 'http://www.omdbapi.com/?t=' + movie +'&y=&plot=short&r=json&tomatoes=';
   
 request(queryUrl, function (error, response, body) {
