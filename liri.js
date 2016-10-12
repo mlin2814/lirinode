@@ -74,17 +74,17 @@ var spotify = require('spotify');
 // var spotifySong = process.argv[3];
 
 spotify.search({ type: 'track', query: process.argv[3]}, function(err, data){
-    if (err) {
-        console.log('Error occurred: ' + err);
-        return;
+    if (process.argv[3]) {
+        console.log("Artist: " + data.tracks.items[0].artists[0].name);
+        console.log("Song Title: " + data.tracks.items[0].name);
+        console.log("Album Title: " + data.tracks.items[0].album.name);
+        console.log("Spotify URL: " + data.tracks.items[0].preview_url);
         }
     else {
         // console.log(spotify.search);
             // console.log(data);
-            console.log("Artist: " + data.tracks.items[0].artists[0].name);
-            console.log("Song Title: " + data.tracks.items[0].name);
-            console.log("Album Title: " + data.tracks.items[0].album.name);
-            console.log("Spotify URL: " + data.tracks.items[0].preview_url);
+            console.log("The Sign by Ace of Base");
+            
 
     }
     // spotifySong = "Title" + JSON.parse(data).Name + "\n" + 
