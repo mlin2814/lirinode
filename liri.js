@@ -4,6 +4,7 @@ var movie = process.argv[3];
 var keys = require('./keys.js');
 keys.more = {'extra' : 'more'}
 
+var fs = require('fs');
 
 var action = process.argv[2];
 var value = process.argv[3];
@@ -17,10 +18,14 @@ switch(action){
         spotify();
     break;
 
-    case 'omdb':
+    case 'movie-this':
         omdb(value);
     break;
-}
+
+    case 'do-what-it-says':
+        doThis();
+    break;
+};
 
 function twitter(){
     var Twitter = require('twitter');
@@ -31,9 +36,7 @@ function twitter(){
     };
     var twitterInput = process.argv[2];
 
-    // if (twitterInput == "my-tweets"){
         client.get('statuses/user_timeline', params, function(error, tweets, response){
-    //    if(error) throw error;
             for (var i = 0; i < tweets.length; i++){
                 console.log("On " + tweets[i].created_at + ", " + tweets[i].user.screen_name + " said: " + tweets[i].text);         
                 console.log("-----------------------------------");
@@ -41,16 +44,9 @@ function twitter(){
         })
     };
 
-
-
-    //     })
-                // console.log("Tweeted: "+ response.text + " on: "+ response.created_at)
-                // console.log("------------------------------");
-
 // =======================
 function spotify(){
 var spotify = require('spotify');
-// var spotifySong = process.argv[3];
 
 spotify.search({ type: 'track', query: process.argv[3]}, function(err, data){
     if (process.argv[3]) {
@@ -60,31 +56,20 @@ spotify.search({ type: 'track', query: process.argv[3]}, function(err, data){
         console.log("Spotify URL: " + data.tracks.items[0].preview_url);
         }
     else {
-        // console.log(spotify.search);
-            // console.log(data);
-            console.log("The Sign by Ace of Base");
+        console.log("The Sign by Ace of Base");
             
 
     }
-    // spotifySong = "Title" + JSON.parse(data).Name + "\n" + 
-    //                 "Artist" + JSON.parse(data).artists.name + "\n" +
-    //                 "Preview" + JSON.parse(data).preview_url + "\n" +
-    //             "Album" + JSON.parse(data).Albums.Title.Name + "\n" + 
-    // console.log(JSON.stringify(data, null, 2));
+    
     });
 }
 //========================
-
 function omdb(value){
 
-// console.log("Does anything work...", value);
 var queryUrl = 'http://www.omdbapi.com/?t=' + value +'&y=&plot=short&r=json&tomatoes=true';
-  // console.log(queryUrl);
+
 request(queryUrl, function (error, response, body) {
-    // If the request is successful (i.e. if the response status code is 200)
     if (!error && response.statusCode == 200 && process.argv[3] != null) {
-        // Parse the body of the site and recover just the imdbRating
-        // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it). 
         console.log("Title: " + JSON.parse(body)["Title"]);
         console.log("IMDB Rating: " + JSON.parse(body)["imdbRating"]);
         console.log("Release Year: " + JSON.parse(body)["Year"]);
@@ -94,7 +79,6 @@ request(queryUrl, function (error, response, body) {
         console.log("Actors: " + JSON.parse(body)["Actors"]);
         console.log("RT Rating: " + JSON.parse(body)["tomatoMeter"]);
         console.log("RT Site: " + JSON.parse(body)["tomatoURL"]);
-        // console.log(JSON.parse(body));
     } 
     else {
         console.log("Title: Mr. Nobody");
@@ -109,37 +93,15 @@ request(queryUrl, function (error, response, body) {
     }
 });
 
-
-
-
 }
+// =======================================
+function doThis() {
+     fs.readFile("random.txt", "utf8", function(error, data) {
+        console.log(data);
+        dataArray = data.split(',');
+        songTitle = dataArray[1];
+        spotify(songTitle);
+     });
+};
 
-// var Twitter = require('twitter');
 
-// var client = new Twitter(keys.twitterKeys);
-
-// var params = {
-//  screen_name: 'RC2814',
-//  count: 3,
-
-// };
-
-// var twitterInput = process.argv[2];
-
-// if (twitterInput == "my-tweets"){
-//  client.get('statuses/user_timeline', params, function(error, tweets, response){
-//          console.log(tweets);
-//  });
-// };
-
-// // // ==================================
-
-// var request = require('request');
-// var movie = process.argv[3];
-// request('http://www.omdbapi.com/?' + movie + "t=&y=&plot=short&r=json&tomatoes=", function (error, response, body) {
-
-//  if (!error && response.statusCode == 200) {
-
-//      console.log("The movie's information is: " + JSON.parse(body)["imdbInfo"])
-//  }
-// });
