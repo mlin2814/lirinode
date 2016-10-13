@@ -4,42 +4,12 @@ var movie = process.argv[3];
 var keys = require('./keys.js');
 keys.more = {'extra' : 'more'}
 
-// var Twitter = require('twitter');
-
-// var client = new Twitter(keys.twitterKeys);
-
-// var params = {
-// 	screen_name: 'RC2814',
-// 	count: 3,
-
-// };
-
-// var twitterInput = process.argv[2];
-
-// if (twitterInput == "my-tweets"){
-// 	client.get('statuses/user_timeline', params, function(error, tweets, response){
-//    		console.log(tweets);
-// 	});
-// };
-
-// // // ==================================
-
-// var request = require('request');
-// var movie = process.argv[3];
-// request('http://www.omdbapi.com/?' + movie + "t=&y=&plot=short&r=json&tomatoes=", function (error, response, body) {
-
-// 	if (!error && response.statusCode == 200) {
-
-// 		console.log("The movie's information is: " + JSON.parse(body)["imdbInfo"])
-// 	}
-// });
-
 
 var action = process.argv[2];
 var value = process.argv[3];
 
 switch(action){
-    case 'twitter':
+    case 'my-tweets':
         twitter();
     break;
 
@@ -57,16 +27,25 @@ function twitter(){
     var client = new Twitter(keys.twitterKeys);
     var params = {
         screen_name: 'RC2814',
-        count: 3,
+        count: 20,
     };
-    var twitterInput = process.argv[3];
+    var twitterInput = process.argv[2];
 
-    if (twitterInput == "my-tweets"){
+    // if (twitterInput == "my-tweets"){
         client.get('statuses/user_timeline', params, function(error, tweets, response){
-            console.log(tweets);
+    //    if(error) throw error;
+            for (var i = 0; i < tweets.length; i++){
+                console.log("On " + tweets[i].created_at + ", " + tweets[i].user.screen_name + " said: " + tweets[i].text);         
+                console.log("-----------------------------------");
+            }
         })
     };
-}
+
+
+
+    //     })
+                // console.log("Tweeted: "+ response.text + " on: "+ response.created_at)
+                // console.log("------------------------------");
 
 // =======================
 function spotify(){
@@ -103,11 +82,11 @@ var queryUrl = 'http://www.omdbapi.com/?t=' + value +'&y=&plot=short&r=json&toma
   // console.log(queryUrl);
 request(queryUrl, function (error, response, body) {
     // If the request is successful (i.e. if the response status code is 200)
-    if (!error && response.statusCode == 200) {
+    if (!error && response.statusCode == 200 && process.argv[3] != null) {
         // Parse the body of the site and recover just the imdbRating
         // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it). 
         console.log("Title: " + JSON.parse(body)["Title"]);
-        console.log("Rating: " + JSON.parse(body)["Rated"]);
+        console.log("IMDB Rating: " + JSON.parse(body)["imdbRating"]);
         console.log("Release Year: " + JSON.parse(body)["Year"]);
         console.log("Country: " + JSON.parse(body)["Country"]);
         console.log("Language: " + JSON.parse(body)["Language"]);
@@ -116,12 +95,51 @@ request(queryUrl, function (error, response, body) {
         console.log("RT Rating: " + JSON.parse(body)["tomatoMeter"]);
         console.log("RT Site: " + JSON.parse(body)["tomatoURL"]);
         // console.log(JSON.parse(body));
-    }else{
-        console.log(error);
+    } 
+    else {
+        console.log("Title: Mr. Nobody");
+        console.log("IMDB Rating: 7.9");
+        console.log("Release Year: 2009");
+        console.log("Country: Belgium, Germany, Canada, France");
+        console.log("Language: English, Mohawk");
+        console.log("Plot: A boy stands on a station platform as a train is about to leave. Should he go with his mother or stay with his father? Infinite possibilities arise from this decision. As long as he doesn't choose, anything is possible.");
+        console.log("Actors: Jared Leto, Sarah Polley, Diane Kruger, Linh Dan Pham");
+        console.log("RT Rating: 64");
+        console.log("RT Site: http://www.rottentomatoes.com/m/mr-nobody");
     }
 });
 
 
+
+
 }
 
+// var Twitter = require('twitter');
 
+// var client = new Twitter(keys.twitterKeys);
+
+// var params = {
+//  screen_name: 'RC2814',
+//  count: 3,
+
+// };
+
+// var twitterInput = process.argv[2];
+
+// if (twitterInput == "my-tweets"){
+//  client.get('statuses/user_timeline', params, function(error, tweets, response){
+//          console.log(tweets);
+//  });
+// };
+
+// // // ==================================
+
+// var request = require('request');
+// var movie = process.argv[3];
+// request('http://www.omdbapi.com/?' + movie + "t=&y=&plot=short&r=json&tomatoes=", function (error, response, body) {
+
+//  if (!error && response.statusCode == 200) {
+
+//      console.log("The movie's information is: " + JSON.parse(body)["imdbInfo"])
+//  }
+// });
